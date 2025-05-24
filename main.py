@@ -1,13 +1,14 @@
-import speedtest
-import pandas as pd
-import matplotlib.pyplot as plt
-from datetime import datetime
 import time
+from datetime import datetime, timedelta
+
+import matplotlib.pyplot as plt
+import pandas as pd
+
+import speedtest
 
 # Duration settings
 INTERVAL = 10  # seconds
 DURATION = 3600  # 1 hour in seconds
-NUM_TESTS = DURATION // INTERVAL
 
 # Data storage
 results = []
@@ -17,10 +18,17 @@ print(f"Starting speed test every {INTERVAL} seconds for 1 hour...")
 try:
     st = speedtest.Speedtest()
     st.get_best_server()
-    for i in range(NUM_TESTS):
+    
+    # Record start time
+    start_time = datetime.now()
+    end_time = start_time + timedelta(seconds=DURATION)
+    test_count = 0
+    
+    while datetime.now() < end_time:
         timestamp = datetime.now()
+        test_count += 1
 
-        print(f"Test {i+1}/{NUM_TESTS} at {timestamp.strftime('%H:%M:%S')}...")
+        print(f"Test {test_count} at {timestamp.strftime('%H:%M:%S')}...")
 
         download_speed = st.download() / 1_000_000  # Convert to Mbps
         upload_speed = st.upload() / 1_000_000  # Convert to Mbps
@@ -81,5 +89,4 @@ plt.grid(True)
 # Save plot with timestamp
 plot_filename = f"internet_speed_plot_{timestamp_str}.png"
 plt.savefig(plot_filename)
-plt.show()
 print(f"Plot saved as '{plot_filename}'.")
