@@ -46,9 +46,13 @@ except KeyboardInterrupt:
 # Convert results to DataFrame
 df = pd.DataFrame(results)
 
-# Save to CSV
-df.to_csv("internet_speed_log.csv", index=False)
-print("Data saved to 'internet_speed_log.csv'.")
+# Generate timestamp for filenames
+timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+# Save to CSV with timestamp
+csv_filename = f"internet_speed_log_{timestamp_str}.csv"
+df.to_csv(csv_filename, index=False)
+print(f"Data saved to '{csv_filename}'.")
 
 # Plotting
 plt.figure(figsize=(12, 6))
@@ -73,6 +77,9 @@ plt.xticks(rotation=45)
 plt.legend()
 plt.tight_layout()
 plt.grid(True)
-plt.savefig("internet_speed_plot.png")
+
+# Save plot with timestamp
+plot_filename = f"internet_speed_plot_{timestamp_str}.png"
+plt.savefig(plot_filename)
 plt.show()
-print("Plot saved as 'internet_speed_plot.png'.")
+print(f"Plot saved as '{plot_filename}'.")
